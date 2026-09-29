@@ -1,19 +1,18 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { currentUser } from '@/data/mockData';
-import { useApp } from '@/lib/AppContext';
-import { AccessRequest, AccessCategory } from '@/data/mockData';
+import { useApp } from '@/lib/AppContext';                              // ← NEW
+import { AccessRequest, AccessCategory } from '@/data/mockData';        // ← NEW types
 import {
   Edit3, Share2, MapPin, Globe, Plus, X, CheckCircle2, ChevronRight,
   User, Target, BookOpen, Briefcase, Award, Clock, LogOut,
   Bell, Lock, Smartphone, Trash2, Check, Copy, TrendingUp,
-  Shield, Sparkles, Eye, AlertTriangle, Key,
+  Shield,                                                              // ← NEW icon
 } from 'lucide-react';
 
-/* ─── EDIT PROFILE MODAL ─── */
+/* ─── EDIT PROFILE MODAL (unchanged) ─── */
 function EditProfileModal({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({
     name: currentUser.name,
@@ -65,7 +64,7 @@ function EditProfileModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ─── ADD EXPERIENCE MODAL ─── */
+/* ─── ADD EXPERIENCE MODAL (unchanged) ─── */
 function AddExperienceModal({ onClose, onAdd }: {
   onClose: () => void;
   onAdd: (exp: Experience) => void;
@@ -123,7 +122,7 @@ function AddExperienceModal({ onClose, onAdd }: {
   );
 }
 
-/* ─── ADD EDUCATION MODAL ─── */
+/* ─── ADD EDUCATION MODAL (unchanged) ─── */
 function AddEducationModal({ onClose, onAdd }: {
   onClose: () => void;
   onAdd: (edu: Education) => void;
@@ -171,7 +170,7 @@ function AddEducationModal({ onClose, onAdd }: {
   );
 }
 
-/* ─── SHARE PROFILE MODAL ─── */
+/* ─── SHARE PROFILE MODAL (unchanged) ─── */
 function ShareProfileModal({ onClose }: { onClose: () => void }) {
   const [copied, setCopied] = useState(false);
   const link = 'herpath.app/u/riya-sharma';
@@ -199,7 +198,7 @@ function ShareProfileModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ─── TYPES ─── */
+/* ─── TYPES (unchanged) ─── */
 interface Experience {
   id: string; title: string; company: string;
   from: string; to: string; current: boolean; desc: string;
@@ -208,7 +207,7 @@ interface Education {
   id: string; degree: string; school: string; field: string; from: string; to: string;
 }
 
-/* ─── SECTION CARD ─── */
+/* ─── SECTION CARD (unchanged) ─── */
 function SectionCard({ title, icon, children, onAdd, addLabel }: {
   title: string; icon: React.ReactNode; children: React.ReactNode;
   onAdd?: () => void; addLabel?: string;
@@ -231,12 +230,13 @@ function SectionCard({ title, icon, children, onAdd, addLabel }: {
   );
 }
 
-/* ─── SETTINGS PANEL ─── */
+/* ─── SETTINGS PANEL (unchanged) ─── */
 function SettingsPanel() {
   const settings = [
     { icon: <User size={16} />, label: 'Account Settings' },
     { icon: <Bell size={16} />, label: 'Notifications' },
     { icon: <Globe size={16} />, label: 'Language & Region' },
+    { icon: <Lock size={16} />, label: 'Privacy & Security' },
     { icon: <Clock size={16} />, label: 'Availability Settings' },
     { icon: <Smartphone size={16} />, label: 'Connected Accounts' },
   ];
@@ -263,7 +263,17 @@ function SettingsPanel() {
   );
 }
 
-/* ─── PRIVACY PANEL ─── */
+/* ─── PRIVACY & ACCESS PANEL (NEW) ─── */
+const categoryLabels: Record<AccessCategory, string> = {
+  skills: 'Skills & Proficiency',
+  projects: 'Projects & Work Samples',
+  learningProgress: 'Learning Paths & Progress',
+  certificates: 'Certificates & Credentials',
+  achievements: 'Badges & Achievements',
+  assessments: 'Assessment Scores',
+  goals: 'Career Goals & Interests',
+};
+
 function PrivacyPanel() {
   const { user, accessRequests, approveAccessRequest, rejectAccessRequest, revokeAccess } = useApp();
   const [copied, setCopied] = useState(false);
@@ -282,14 +292,14 @@ function PrivacyPanel() {
   const herpathId = user?.herpathId || 'HP-7K29-X4M8';
 
   const handleCopyId = () => {
-    navigator.clipboard.writeText(herpathId);
+    navigator.clipboard.writeText(herpathId).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const openReviewModal = (req: AccessRequest) => {
     setReviewingRequest(req);
-    const initialPerms: Record<AccessCategory, boolean> = {
+    setPermissions({
       skills: req.requestedCategories.includes('skills'),
       projects: req.requestedCategories.includes('projects'),
       learningProgress: req.requestedCategories.includes('learningProgress'),
@@ -297,8 +307,7 @@ function PrivacyPanel() {
       achievements: req.requestedCategories.includes('achievements'),
       assessments: req.requestedCategories.includes('assessments'),
       goals: req.requestedCategories.includes('goals'),
-    };
-    setPermissions(initialPerms);
+    });
   };
 
   const handleApprove = () => {
@@ -312,19 +321,9 @@ function PrivacyPanel() {
   const activeAccesses = accessRequests.filter(r => r.status === 'APPROVED');
   const pastRequests = accessRequests.filter(r => r.status === 'REJECTED' || r.status === 'REVOKED' || r.status === 'EXPIRED');
 
-  const categoryLabels: Record<AccessCategory, string> = {
-    skills: 'Skills & Proficiency',
-    projects: 'Projects & Work Samples',
-    learningProgress: 'Learning Paths & Progress',
-    certificates: 'Certificates & Credentials',
-    achievements: 'Badges & Achievements',
-    assessments: 'Assessment Scores',
-    goals: 'Career Goals & Interests',
-  };
-
   return (
     <div style={{ maxWidth: 880 }}>
-      {/* HERPATH ID HERO CARD */}
+      {/* HerPath ID hero card */}
       <div className="card" style={{ padding: '28px', background: 'linear-gradient(135deg, var(--secondary), var(--primary))', border: 'none', color: 'white', marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div>
@@ -337,16 +336,14 @@ function PrivacyPanel() {
               Share this unique ID with trusted experts so they can request access to your learning journey. Experts cannot view your data until you grant permission.
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button onClick={handleCopyId} className="btn" style={{ background: 'var(--accent)', color: 'var(--secondary)', fontWeight: 700, gap: 6 }}>
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              {copied ? 'Copied ID!' : 'Copy HerPath ID'}
-            </button>
-          </div>
+          <button onClick={handleCopyId} className="btn" style={{ background: 'var(--accent)', color: 'var(--secondary)', fontWeight: 700, gap: 6 }}>
+            {copied ? <Check size={16} /> : <Copy size={16} />}
+            {copied ? 'Copied ID!' : 'Copy HerPath ID'}
+          </button>
         </div>
       </div>
 
-      {/* PENDING REQUESTS */}
+      {/* Pending requests */}
       {pendingRequests.length > 0 && (
         <div style={{ marginBottom: 28 }}>
           <h3 style={{ fontWeight: 700, fontSize: '1.0625rem', marginBottom: 12, fontFamily: "'Plus Jakarta Sans'", display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -381,11 +378,12 @@ function PrivacyPanel() {
         </div>
       )}
 
-      {/* ACTIVE ACCESSES */}
+      {/* Active grants */}
       <div style={{ marginBottom: 32 }}>
         <h3 style={{ fontWeight: 700, fontSize: '1.0625rem', marginBottom: 14, fontFamily: "'Plus Jakarta Sans'", display: 'flex', alignItems: 'center', gap: 8 }}>
           <CheckCircle2 size={18} color="var(--success)" /> Active Granted Accesses ({activeAccesses.length})
         </h3>
+
         {activeAccesses.length === 0 ? (
           <div className="card" style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)' }}>
             <Lock size={28} color="var(--text-light)" style={{ marginBottom: 8 }} />
@@ -429,7 +427,7 @@ function PrivacyPanel() {
         )}
       </div>
 
-      {/* HISTORY */}
+      {/* History */}
       {pastRequests.length > 0 && (
         <div>
           <h3 style={{ fontWeight: 700, fontSize: '1.0625rem', marginBottom: 12, fontFamily: "'Plus Jakarta Sans'" }}>Access History</h3>
@@ -440,16 +438,14 @@ function PrivacyPanel() {
                   <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{past.expertName}</span>
                   <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginLeft: 8 }}>({past.expertRole})</span>
                 </div>
-                <span className={`badge ${past.status === 'REVOKED' ? 'badge-error' : 'badge-neutral'}`} style={{ fontSize: '0.75rem' }}>
-                  {past.status}
-                </span>
+                <span className={`badge ${past.status === 'REVOKED' ? 'badge-error' : 'badge-neutral'}`} style={{ fontSize: '0.75rem' }}>{past.status}</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* REVIEW MODAL */}
+      {/* Review modal */}
       {reviewingRequest && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setReviewingRequest(null)}>
           <div className="modal modal-lg">
@@ -462,16 +458,16 @@ function PrivacyPanel() {
                 <X size={20} />
               </button>
             </div>
+
             <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: '16px', background: 'var(--bg-alt)', borderRadius: 'var(--radius)', marginBottom: 20 }}>
               <div className="avatar-placeholder avatar-lg" style={{ background: reviewingRequest.expertAvatarColor, color: 'white' }}>{reviewingRequest.expertInitials}</div>
               <div>
                 <div style={{ fontWeight: 700, fontSize: '1rem' }}>{reviewingRequest.expertName}</div>
                 <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{reviewingRequest.expertRole}</div>
-                <div style={{ fontSize: '0.8125rem', color: 'var(--primary)', fontWeight: 600, marginTop: 2 }}>
-                  Purpose: {reviewingRequest.purpose}
-                </div>
+                <div style={{ fontSize: '0.8125rem', color: 'var(--primary)', fontWeight: 600, marginTop: 2 }}>Purpose: {reviewingRequest.purpose}</div>
               </div>
             </div>
+
             <div style={{ marginBottom: 20 }}>
               <div style={{ fontWeight: 700, fontSize: '0.9375rem', marginBottom: 12, fontFamily: "'Plus Jakarta Sans'" }}>Select Permitted Data Categories</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
@@ -496,12 +492,7 @@ function PrivacyPanel() {
                       <span style={{ fontSize: '0.875rem', fontWeight: isChecked ? 600 : 400, color: isChecked ? 'var(--primary)' : 'var(--text)' }}>
                         {categoryLabels[cat]}
                       </span>
-                      <div style={{
-                        width: 18, height: 18, borderRadius: '4px',
-                        background: isChecked ? 'var(--primary)' : 'var(--bg-alt)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'white', fontSize: '0.75rem', fontWeight: 800,
-                      }}>
+                      <div style={{ width: 18, height: 18, borderRadius: '4px', background: isChecked ? 'var(--primary)' : 'var(--bg-alt)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '0.75rem', fontWeight: 800 }}>
                         {isChecked ? '✓' : ''}
                       </div>
                     </div>
@@ -509,6 +500,7 @@ function PrivacyPanel() {
                 })}
               </div>
             </div>
+
             <div style={{ marginBottom: 24 }}>
               <div style={{ fontWeight: 700, fontSize: '0.9375rem', marginBottom: 8, fontFamily: "'Plus Jakarta Sans'" }}>Access Duration</div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -538,6 +530,7 @@ function PrivacyPanel() {
                 ))}
               </div>
             </div>
+
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
               <button onClick={() => setReviewingRequest(null)} className="btn btn-secondary">Cancel</button>
               <button onClick={handleApprove} className="btn btn-primary" style={{ gap: 6 }}>
@@ -553,10 +546,7 @@ function PrivacyPanel() {
 
 /* ─── MAIN PROFILE PAGE ─── */
 export default function ProfilePage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const initialTab = searchParams.get('tab') || 'profile';
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [activeTab, setActiveTab] = useState('profile');
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showShareProfile, setShowShareProfile] = useState(false);
   const [showAddExp, setShowAddExp] = useState(false);
@@ -586,14 +576,14 @@ export default function ProfilePage() {
       </div>
 
       <div className="page-container">
-        {/* Tabs */}
+        {/* Tabs — Privacy & Access added */}
         <div className="tabs" style={{ marginBottom: 24 }}>
           {[
             { id: 'profile', label: 'Profile' },
             { id: 'settings', label: 'Settings' },
-            { id: 'privacy', label: 'Privacy' },
+            { id: 'privacy', label: 'Privacy & Access' },   // ← NEW
           ].map(tab => (
-            <button key={tab.id} className={`tab ${activeTab === tab.id ? 'active' : ''}`} onClick={() => { setActiveTab(tab.id); router.push(`/profile?tab=${tab.id}`, { scroll: false }); }}>{tab.label}</button>
+            <button key={tab.id} className={`tab ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id)}>{tab.label}</button>
           ))}
         </div>
 
@@ -606,6 +596,7 @@ export default function ProfilePage() {
             <SettingsPanel />
           </div>
         ) : activeTab === 'privacy' ? (
+          /* ─── NEW: Privacy & Access tab ─── */
           <PrivacyPanel />
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 24, alignItems: 'start' }}>
