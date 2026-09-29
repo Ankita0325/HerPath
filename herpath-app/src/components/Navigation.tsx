@@ -7,6 +7,7 @@ import {
   Home, BookOpen, Compass, Briefcase, User,
   LogOut, Sparkles, ChevronRight, Shield, Search, Users,
   TrendingUp, PanelLeftClose, PanelLeftOpen,
+  type LucideIcon,
 } from 'lucide-react';
 
 const MIN_WIDTH = 180;
@@ -19,6 +20,13 @@ export function Sidebar() {
   const pathname = usePathname();
   const { user, currentRole, logout, toggleAIPanel, accessRequests } = useApp();
   const router = useRouter();
+
+  interface NavItem {
+    href: string;
+    label: string;
+    icon: LucideIcon;
+    badge?: number;
+  }
 
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [hidden, setHidden] = useState(false);
@@ -165,10 +173,9 @@ export function Sidebar() {
     router.push(currentRole === 'expert' ? '/login/expert' : '/');
   };
 
-  const pendingCount = accessRequests.filter(r => r.status === 'PENDING').length;
   const approvedCount = accessRequests.filter(r => r.status === 'APPROVED').length;
 
-  const learnerNavItems = [
+  const learnerNavItems: NavItem[] = [
     { href: '/dashboard', label: 'Home', icon: Home },
     { href: '/learn', label: 'Learn', icon: BookOpen },
     { href: '/discover', label: 'Discover', icon: Compass },
@@ -176,10 +183,9 @@ export function Sidebar() {
     { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
     { href: '/profile', label: 'Profile', icon: User },
     { href: '/fraud-legal-help', label: 'Fraud & Legal Help', icon: Shield },
-    { href: '/privacy', label: 'Privacy & Access', icon: Shield, badge: pendingCount > 0 ? pendingCount : undefined },
   ];
 
-  const expertNavItems = [
+  const expertNavItems: NavItem[] = [
     { href: '/expert/dashboard', label: 'Expert Home', icon: Home },
     { href: '/expert/lookup', label: 'Look Up Learner', icon: Search },
     { href: '/expert/learners', label: 'My Learners', icon: Users, badge: approvedCount > 0 ? approvedCount : undefined },
@@ -458,7 +464,6 @@ export function MobileNav() {
         { href: '/dashboard', label: 'Home', icon: Home },
         { href: '/learn', label: 'Learn', icon: BookOpen },
         { href: '/discover', label: 'Discover', icon: Compass },
-        { href: '/privacy', label: 'Privacy', icon: Shield },
         { href: '/fraud-legal-help', label: 'Legal Help', icon: Shield },
         { href: '/profile', label: 'Profile', icon: User },
       ];
