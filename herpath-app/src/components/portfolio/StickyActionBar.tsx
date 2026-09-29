@@ -128,8 +128,8 @@ export function StickyActionBar({ theme, startingPrice, liked, onLike, onShare, 
             borderRadius: 999,
             border: 'none',
             background: isDark
-              ? 'linear-gradient(135deg, #D6B36A, #B8860B)'
-              : 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+              ? 'linear-gradient(135deg, #14B8A6, #0F766E)'
+              : 'linear-gradient(135deg, #0F766E, #0D5E57)',
             color: '#FFFFFF',
             fontSize: '0.72rem',
             fontWeight: 700,

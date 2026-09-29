@@ -113,50 +113,50 @@ export default function SignupPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 16px' }}>
-      <div style={{ width: '100%', maxWidth: '480px' }}>
-        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500, marginBottom: '28px', transition: 'color var(--transition)' }}
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 16px' }}>
+      <div className="animate-fade-in-up" style={{ width: '100%', maxWidth: '520px' }}>
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '24px', transition: 'color var(--transition)' }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--primary)'}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'}
         >
           <ArrowLeft size={16} /> Back to Login
         </Link>
 
-        <div className="card" style={{ padding: '40px' }}>
+        <div className="card glass-panel" style={{ padding: '44px 40px', boxShadow: 'var(--shadow-xl)', borderRadius: 'var(--radius-xl)' }}>
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
-            <div style={{ width: 36, height: 36, borderRadius: '10px', background: 'linear-gradient(135deg, var(--primary), var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'white', fontWeight: 800, fontFamily: "'Plus Jakarta Sans'" }}>H</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+            <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'linear-gradient(135deg, var(--primary), var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(15,118,110,0.2)' }}>
+              <span style={{ color: 'white', fontWeight: 800, fontSize: '1.125rem', fontFamily: "'Plus Jakarta Sans'" }}>H</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: '1rem', fontFamily: "'Plus Jakarta Sans'" }}>HerPath</span>
+            <span style={{ fontWeight: 800, fontSize: '1.25rem', fontFamily: "'Plus Jakarta Sans'" }}>HerPath</span>
           </div>
 
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: "'Plus Jakarta Sans'", marginBottom: '6px' }}>Create your account</h1>
+          <h1 style={{ fontSize: '1.625rem', fontWeight: 800, fontFamily: "'Plus Jakarta Sans'", marginBottom: '6px' }}>Create your account</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginBottom: '28px' }}>Start your HerPath journey today.</p>
 
           {errors.firebaseConfig && (
-            <div style={{ padding: '12px 16px', background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 'var(--radius)', color: '#991B1B', fontSize: '0.875rem', marginBottom: '20px', lineHeight: 1.5 }}>
+            <div style={{ padding: '12px 16px', background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 'var(--radius-md)', color: '#991B1B', fontSize: '0.875rem', marginBottom: '20px', lineHeight: 1.5 }}>
               <strong>⚠️ Action Required in Firebase Console:</strong>
               <div style={{ marginTop: '4px' }}>{errors.firebaseConfig}</div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             <div className="form-group">
               <label className="form-label" htmlFor="name">Full Name *</label>
-              <input id="name" className={`form-input ${errors.name ? 'error' : ''}`} value={form.name} onChange={e => update('name', e.target.value)} placeholder="Riya Sharma" />
+              <input id="name" className={`form-input input-animated ${errors.name ? 'error' : ''}`} value={form.name} onChange={e => update('name', e.target.value)} placeholder="Riya Sharma" />
               {errors.name && <span className="form-error">{errors.name}</span>}
             </div>
 
             <div className="form-group">
               <label className="form-label" htmlFor="signup-email">Email *</label>
-              <input id="signup-email" type="email" className={`form-input ${errors.email ? 'error' : ''}`} value={form.email} onChange={e => update('email', e.target.value)} placeholder="riya@email.com" />
+              <input id="signup-email" type="email" className={`form-input input-animated ${errors.email ? 'error' : ''}`} value={form.email} onChange={e => update('email', e.target.value)} placeholder="riya@email.com" />
               {errors.email && <span className="form-error">{errors.email}</span>}
             </div>
 
             <div className="form-group">
               <label className="form-label" htmlFor="phone">Phone Number</label>
-              <input id="phone" type="tel" className={`form-input ${errors.phone ? 'error' : ''}`} value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="9876543210" />
+              <input id="phone" type="tel" className={`form-input input-animated ${errors.phone ? 'error' : ''}`} value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="9876543210" />
               {errors.phone && <span className="form-error">{errors.phone}</span>}
             </div>
 
@@ -164,7 +164,7 @@ export default function SignupPage() {
               <div className="form-group">
                 <label className="form-label" htmlFor="pwd">Password *</label>
                 <div style={{ position: 'relative' }}>
-                  <input id="pwd" type={showPassword ? 'text' : 'password'} className={`form-input ${errors.password ? 'error' : ''}`} value={form.password} onChange={e => update('password', e.target.value)} placeholder="Min. 8 characters" style={{ paddingRight: '44px' }} />
+                  <input id="pwd" type={showPassword ? 'text' : 'password'} className={`form-input input-animated ${errors.password ? 'error' : ''}`} value={form.password} onChange={e => update('password', e.target.value)} placeholder="Min. 8 characters" style={{ paddingRight: '44px' }} />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex' }}>
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -174,7 +174,7 @@ export default function SignupPage() {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="confirm-pwd">Confirm Password *</label>
-                <input id="confirm-pwd" type="password" className={`form-input ${errors.confirmPassword ? 'error' : ''}`} value={form.confirmPassword} onChange={e => update('confirmPassword', e.target.value)} placeholder="Repeat password" />
+                <input id="confirm-pwd" type="password" className={`form-input input-animated ${errors.confirmPassword ? 'error' : ''}`} value={form.confirmPassword} onChange={e => update('confirmPassword', e.target.value)} placeholder="Repeat password" />
                 {errors.confirmPassword && <span className="form-error">{errors.confirmPassword}</span>}
               </div>
             </div>
@@ -183,7 +183,7 @@ export default function SignupPage() {
               <label className="form-label" htmlFor="lang-select">Preferred Language</label>
               <div style={{ position: 'relative' }}>
                 <Globe size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                <select id="lang-select" className="form-input" value={form.language} onChange={e => update('language', e.target.value)} style={{ paddingLeft: '38px' }}>
+                <select id="lang-select" className="form-input input-animated" value={form.language} onChange={e => update('language', e.target.value)} style={{ paddingLeft: '38px' }}>
                   {['English', 'Hindi', 'Marathi', 'Tamil', 'Telugu', 'Kannada', 'Bengali', 'Gujarati'].map(l => <option key={l}>{l}</option>)}
                 </select>
               </div>
@@ -191,11 +191,11 @@ export default function SignupPage() {
 
             <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
               By creating an account, you agree to HerPath's{' '}
-              <a href="#" style={{ color: 'var(--primary)' }}>Terms of Service</a> and{' '}
-              <a href="#" style={{ color: 'var(--primary)' }}>Privacy Policy</a>.
+              <a href="#" style={{ color: 'var(--primary)', fontWeight: 600 }}>Terms of Service</a> and{' '}
+              <a href="#" style={{ color: 'var(--primary)', fontWeight: 600 }}>Privacy Policy</a>.
             </p>
 
-            <button type="submit" className="btn btn-primary btn-lg w-full" disabled={isLoading} style={{ justifyContent: 'center', marginTop: '4px' }}>
+            <button type="submit" className="btn btn-primary btn-lg btn-animated w-full" disabled={isLoading} style={{ justifyContent: 'center', marginTop: '4px' }}>
               {isLoading ? (
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
@@ -205,9 +205,9 @@ export default function SignupPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
+          <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
             Already have an account?{' '}
-            <Link href="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>Log In</Link>
+            <Link href="/" style={{ color: 'var(--primary)', fontWeight: 700 }}>Log In</Link>
           </p>
         </div>
       </div>

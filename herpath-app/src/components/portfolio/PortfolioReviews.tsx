@@ -35,7 +35,7 @@ function RatingDistribution({ theme, distribution }: { theme: Theme; distributio
               style={{
                 width: `${item.percentage}%`,
                 height: '100%',
-                background: isDark ? 'linear-gradient(90deg, #2563EB, #3B82F6)' : 'linear-gradient(90deg, #2563EB, #3B82F6)',
+                background: isDark ? 'linear-gradient(90deg, #0F766E, #10B981)' : 'linear-gradient(90deg, #0F766E, #10B981)',
                 borderRadius: 999,
               }}
             />

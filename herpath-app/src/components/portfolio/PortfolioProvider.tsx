@@ -92,8 +92,8 @@ export function PortfolioProvider({ theme, user }: PortfolioProviderProps) {
               borderRadius: '50%',
               padding: 3,
               background: isDark
-                ? 'linear-gradient(135deg, #2563EB, #3B82F6, #60A5FA)'
-                : 'linear-gradient(135deg, #2563EB, #3B82F6, #60A5FA)',
+                ? 'linear-gradient(135deg, #0F766E, #10B981, #14B8A6)'
+                : 'linear-gradient(135deg, #0F766E, #10B981, #14B8A6)',
             }}
           >
             <div
@@ -123,7 +123,7 @@ export function PortfolioProvider({ theme, user }: PortfolioProviderProps) {
                 width: 22,
                 height: 22,
                 borderRadius: '50%',
-                background: isDark ? '#2563EB' : '#2563EB',
+                background: isDark ? '#0F766E' : '#0F766E',
                 border: `2px solid ${isDark ? '#0A1F3D' : '#FFFFFF'}`,
                 display: 'flex',
                 alignItems: 'center',

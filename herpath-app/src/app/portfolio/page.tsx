@@ -87,9 +87,9 @@ export default function PortfolioPage() {
   }
 
   const isDark = theme === 'dark';
-  const pageBg = isDark ? '#061528' : '#F4EFE6';
-  const cardBg = isDark ? 'rgba(255,255,255,0.04)' : '#FFFFFF';
-  const borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#E5E7EB';
+  const pageBg = isDark ? '#0F172A' : 'var(--bg)';
+  const cardBg = isDark ? '#1E293B' : 'var(--card)';
+  const borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'var(--border)';
 
   return (
     <AppLayout>

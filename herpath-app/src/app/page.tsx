@@ -111,11 +111,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
       {/* Left Panel */}
       <div style={{
         flex: '1',
-        background: 'linear-gradient(145deg, var(--secondary) 0%, var(--primary) 60%, var(--accent) 100%)',
+        background: 'linear-gradient(135deg, #0D5E57 0%, #0F766E 50%, #059669 100%)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -123,56 +123,47 @@ export default function LoginPage() {
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* Background pattern */}
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.05 }}>
-          {[...Array(6)].map((_, i) => (
-            <div key={i} style={{
-              position: 'absolute',
-              width: `${200 + i * 80}px`,
-              height: `${200 + i * 80}px`,
-              borderRadius: '50%',
-              border: '1px solid white',
-              top: `${10 + i * 8}%`,
-              left: `${-20 + i * 6}%`,
-            }} />
-          ))}
+        {/* Animated Background Mesh Spheres */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none' }}>
+          <div className="animate-float" style={{ position: 'absolute', width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, #99F6E4 0%, transparent 70%)', top: '-10%', left: '-10%' }} />
+          <div className="animate-pulse-glow" style={{ position: 'absolute', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, #10B981 0%, transparent 70%)', bottom: '-20%', right: '-10%' }} />
         </div>
 
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '56px', position: 'relative' }}>
-          <div style={{ width: 44, height: 44, borderRadius: '12px', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' }}>
-            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.125rem', fontFamily: "'Plus Jakarta Sans'" }}>H</span>
+        <div className="animate-fade-in-up" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px', position: 'relative' }}>
+          <div style={{ width: 44, height: 44, borderRadius: '12px', background: 'rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(12px)', boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}>
+            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.25rem', fontFamily: "'Plus Jakarta Sans'" }}>H</span>
           </div>
           <span style={{ color: 'white', fontWeight: 800, fontSize: '1.375rem', fontFamily: "'Plus Jakarta Sans'", letterSpacing: '-0.02em' }}>HerPath</span>
         </div>
 
         {/* Hero Text */}
-        <div style={{ position: 'relative', marginBottom: '48px' }}>
-          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.875rem', fontWeight: 500, marginBottom: '16px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Her Skills. Her Journey. Her Future.</div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.03em', fontFamily: "'Plus Jakarta Sans'", marginBottom: '24px' }}>
+        <div className="animate-fade-in-up" style={{ position: 'relative', marginBottom: '40px', animationDelay: '0.1s' }}>
+          <div style={{ color: '#99F6E4', fontSize: '0.8125rem', fontWeight: 700, marginBottom: '14px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Her Skills. Her Journey. Her Future.</div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(2.25rem,4vw,3.25rem)', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.03em', fontFamily: "'Plus Jakarta Sans'", marginBottom: '20px' }}>
             Learn.<br />Connect.<br />Grow.<br />Earn.
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', lineHeight: 1.7, maxWidth: '400px' }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1rem', lineHeight: 1.7, maxWidth: '420px' }}>
             The AI-powered platform that turns your skills into visible opportunities and financial independence.
           </p>
         </div>
 
         {/* Features */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '48px' }}>
+        <div className="animate-fade-in-up" style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '40px', animationDelay: '0.2s' }}>
           {features.map((f, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <CheckCircle2 size={18} color="var(--accent-mid)" />
-              <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9375rem' }}>{f}</span>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', padding: '10px 14px', borderRadius: 'var(--radius)', border: '1px solid rgba(255,255,255,0.15)', maxWidth: 440 }}>
+              <CheckCircle2 size={18} color="#99F6E4" />
+              <span style={{ color: 'white', fontSize: '0.9375rem', fontWeight: 500 }}>{f}</span>
             </div>
           ))}
         </div>
 
-        {/* Stats */}
-        <div style={{ display: 'flex', gap: '32px' }}>
+        {/* Stats Cards */}
+        <div className="animate-fade-in-up" style={{ display: 'flex', gap: '20px', animationDelay: '0.3s' }}>
           {stats.map((s, i) => (
-            <div key={i}>
-              <div style={{ color: 'white', fontWeight: 800, fontSize: '1.5rem', fontFamily: "'Plus Jakarta Sans'" }}>{s.value}</div>
-              <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8125rem' }}>{s.label}</div>
+            <div key={i} style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', padding: '14px 18px', borderRadius: 'var(--radius-md)', flex: 1 }}>
+              <div style={{ color: 'white', fontWeight: 800, fontSize: '1.375rem', fontFamily: "'Plus Jakarta Sans'" }}>{s.value}</div>
+              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.75rem', fontWeight: 600, marginTop: 2 }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -180,13 +171,14 @@ export default function LoginPage() {
 
       {/* Right Panel */}
       <div style={{
-        width: '480px',
+        width: '520px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         padding: '48px 48px',
         background: 'var(--card)',
         position: 'relative',
+        boxShadow: 'var(--shadow-xl)',
       }}>
         {/* Language + Top */}
         <div style={{ position: 'absolute', top: '24px', right: '24px', display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -194,48 +186,48 @@ export default function LoginPage() {
           <select
             value={language}
             onChange={e => setLanguage(e.target.value)}
-            style={{ border: 'none', background: 'none', fontSize: '0.875rem', color: 'var(--text-muted)', cursor: 'pointer', outline: 'none' }}
+            style={{ border: 'none', background: 'none', fontSize: '0.875rem', color: 'var(--text-muted)', cursor: 'pointer', outline: 'none', fontWeight: 600 }}
           >
             {['English', 'Hindi', 'Marathi'].map(l => <option key={l}>{l}</option>)}
           </select>
         </div>
 
-        <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text)', marginBottom: '8px', fontFamily: "'Plus Jakarta Sans'" }}>Welcome Back</h2>
+        <div className="animate-fade-in-up" style={{ marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '1.875rem', fontWeight: 800, color: 'var(--text)', marginBottom: '8px', fontFamily: "'Plus Jakarta Sans'" }}>Welcome Back</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem' }}>Select your account type to sign in.</p>
         </div>
 
         {/* Login Account Type Toggle */}
-        <div style={{ display: 'flex', gap: 6, padding: 4, background: 'var(--bg-alt)', borderRadius: 'var(--radius)', marginBottom: 20 }}>
+        <div className="animate-fade-in-up" style={{ display: 'flex', gap: 6, padding: 5, background: 'var(--bg-alt)', borderRadius: 'var(--radius-md)', marginBottom: 20 }}>
           <button
             type="button"
-            className="btn"
-            style={{ flex: 1, justifyContent: 'center', background: 'var(--card)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8125rem', boxShadow: 'var(--shadow-xs)' }}
+            className="btn btn-animated"
+            style={{ flex: 1, justifyContent: 'center', background: 'var(--card)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.84rem', boxShadow: 'var(--shadow-xs)' }}
           >
             Learner Login
           </button>
           <Link
             href="/login/expert"
-            className="btn"
-            style={{ flex: 1, justifyContent: 'center', background: 'transparent', color: 'var(--text-muted)', fontWeight: 500, fontSize: '0.8125rem' }}
+            className="btn btn-animated"
+            style={{ flex: 1, justifyContent: 'center', background: 'transparent', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.84rem' }}
           >
             Expertise Login
           </Link>
         </div>
 
         {/* Demo Login Banner */}
-        <div style={{ padding: '12px 16px', background: 'var(--accent-light)', border: '1px solid var(--accent-mid)', borderRadius: 'var(--radius)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Sparkles size={16} color="var(--primary)" />
+        <div className="animate-fade-in-up" style={{ padding: '12px 16px', background: 'var(--accent-light)', border: '1px solid var(--accent-mid)', borderRadius: 'var(--radius-md)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Sparkles size={18} color="var(--primary)" />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--primary)' }}>Try the demo</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--primary-dark)' }}>Explore HerPath as Learner Riya Sharma</div>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--primary-dark)' }}>Try the demo account</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--primary)' }}>Explore HerPath as Learner Riya Sharma</div>
           </div>
-          <button onClick={handleDemoLogin} className="btn btn-primary btn-sm">
+          <button onClick={handleDemoLogin} className="btn btn-primary btn-sm btn-animated">
             Start Demo <ArrowRight size={13} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        <form onSubmit={handleSubmit} className="animate-fade-in-up" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div className="form-group">
             <label className="form-label" htmlFor="email">Email or Phone</label>
             <input
@@ -243,7 +235,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={e => { setEmail(e.target.value); setError(''); }}
-              className={`form-input ${error ? 'error' : ''}`}
+              className={`form-input input-animated ${error ? 'error' : ''}`}
               placeholder="Enter your email"
               autoComplete="email"
             />
@@ -252,7 +244,7 @@ export default function LoginPage() {
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <label className="form-label" htmlFor="password">Password</label>
-              <Link href="/forgot-password" style={{ fontSize: '0.8125rem', color: 'var(--primary)', fontWeight: 500 }}>Forgot password?</Link>
+              <Link href="/forgot-password" style={{ fontSize: '0.8125rem', color: 'var(--primary)', fontWeight: 600 }}>Forgot password?</Link>
             </div>
             <div style={{ position: 'relative' }}>
               <input
@@ -260,7 +252,7 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => { setPassword(e.target.value); setError(''); }}
-                className={`form-input ${error ? 'error' : ''}`}
+                className={`form-input input-animated ${error ? 'error' : ''}`}
                 placeholder="Enter your password"
                 autoComplete="current-password"
                 style={{ paddingRight: '44px' }}
@@ -277,7 +269,7 @@ export default function LoginPage() {
 
           {error && <p className="form-error">{error}</p>}
 
-          <button type="submit" className="btn btn-primary btn-lg w-full" disabled={isLoading} style={{ justifyContent: 'center', marginTop: '4px' }}>
+          <button type="submit" className="btn btn-primary btn-lg btn-animated w-full" disabled={isLoading} style={{ justifyContent: 'center', marginTop: '4px' }}>
             {isLoading ? (
               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
@@ -291,7 +283,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="btn btn-secondary btn-lg w-full"
+            className="btn btn-secondary btn-lg btn-animated w-full"
             disabled={isLoading}
             style={{ justifyContent: 'center', gap: '10px' }}
           >
@@ -307,7 +299,7 @@ export default function LoginPage() {
 
         <p style={{ textAlign: 'center', marginTop: '28px', fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
           Don't have an account?{' '}
-          <Link href="/signup" style={{ color: 'var(--primary)', fontWeight: 600 }}>Sign Up</Link>
+          <Link href="/signup" style={{ color: 'var(--primary)', fontWeight: 700 }}>Sign Up</Link>
         </p>
       </div>
     </div>

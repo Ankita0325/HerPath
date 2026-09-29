@@ -87,7 +87,7 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
                 justifyContent: 'center',
               }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#5BE7FF' : '#2563EB'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#14B8A6' : '#0F766E'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="16" x2="12" y2="12" />
                 <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -99,7 +99,7 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: isDark ? '#5BE7FF' : '#2563EB',
+                color: isDark ? '#14B8A6' : '#0F766E',
               }}
             >
               About Service
@@ -130,7 +130,7 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
                 justifyContent: 'center',
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#5BE7FF' : '#14B8A6'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#14B8A6' : '#0F766E'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="2" y1="12" x2="22" y2="12" />
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -181,13 +181,13 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
               width: 32,
               height: 32,
               borderRadius: 10,
-              background: isDark ? 'rgba(91,231,255,0.12)' : '#EFF6FF',
+              background: isDark ? 'rgba(20,184,166,0.12)' : '#ECFDF5',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#5BE7FF' : '#2563EB'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isDark ? '#14B8A6' : '#0F766E'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
               <line x1="8" y1="21" x2="16" y2="21" />
               <line x1="12" y1="17" x2="12" y2="21" />
@@ -199,7 +199,7 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
               fontWeight: 700,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: isDark ? '#5BE7FF' : '#2563EB',
+              color: isDark ? '#14B8A6' : '#0F766E',
             }}
           >
             Service Modes
@@ -214,9 +214,9 @@ export function PortfolioInfo({ theme, bio, languages, availability, serviceMode
                 width: '100%',
                 padding: '12px 16px',
                 borderRadius: 12,
-                background: isDark ? 'rgba(37,99,235,0.12)' : '#EFF6FF',
-                border: `1px solid ${isDark ? 'rgba(37,99,235,0.25)' : '#DBEAFE'}`,
-                color: isDark ? '#5BE7FF' : '#2563EB',
+                background: isDark ? 'rgba(15,118,110,0.12)' : '#ECFDF5',
+                border: `1px solid ${isDark ? 'rgba(15,118,110,0.25)' : '#A7F3D0'}`,
+                color: isDark ? '#14B8A6' : '#0F766E',
                 fontSize: '0.85rem',
                 fontWeight: 600,
                 textAlign: 'center',

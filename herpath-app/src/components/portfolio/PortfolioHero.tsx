@@ -52,8 +52,8 @@ function GoldSparkle({ delay, left, top }: { delay: number; left: string; top: s
 export function PortfolioHero({ theme, category, rating, reviewsCount }: PortfolioHeroProps) {
   const isDark = theme === 'dark';
   const bgGradient = isDark
-    ? 'linear-gradient(135deg, #071A35 0%, #0F2D5C 50%, #174A88 100%)'
-    : 'linear-gradient(135deg, #FFFFFF 0%, #EEF6FF 50%, #DCEEFF 100%)';
+    ? 'linear-gradient(135deg, #052E2B 0%, #0F3D3E 50%, #0F766E 100%)'
+    : 'linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 50%, #CCFBF1 100%)';
   const textColor = isDark ? '#FFFFFF' : '#111827';
   const subtitleColor = isDark ? 'rgba(255,255,255,0.75)' : '#374151';
   const starColor = isDark ? '#D6B36A' : '#D4AF37';
@@ -210,8 +210,8 @@ export function PortfolioHero({ theme, category, rating, reviewsCount }: Portfol
               fontWeight: 700,
               letterSpacing: '0.24em',
               textTransform: 'uppercase',
-              color: isDark ? '#5BE7FF' : '#2563EB',
-              border: `1px solid ${isDark ? 'rgba(91,231,255,0.4)' : 'rgba(37,99,235,0.4)'}`,
+              color: isDark ? '#99F6E4' : '#0F766E',
+              border: `1px solid ${isDark ? 'rgba(153,246,228,0.4)' : 'rgba(15,118,110,0.4)'}`,
               padding: '6px 14px',
               borderRadius: 999,
             }}
@@ -232,7 +232,7 @@ export function PortfolioHero({ theme, category, rating, reviewsCount }: Portfol
             maxWidth: 900,
           }}
         >
-          Creative <span style={{ color: isDark ? '#D6B36A' : '#2563EB' }}>Portfolio</span>
+          Creative <span style={{ color: isDark ? '#14B8A6' : '#0F766E' }}>Portfolio</span>
         </h1>
 
         {/* Location + Rating pill */}
@@ -278,8 +278,8 @@ export function PortfolioHero({ theme, category, rating, reviewsCount }: Portfol
             width: 120,
             height: 2,
             background: isDark
-              ? 'linear-gradient(90deg, transparent, #D6B36A, transparent)'
-              : 'linear-gradient(90deg, transparent, #2563EB, transparent)',
+              ? 'linear-gradient(90deg, transparent, #14B8A6, transparent)'
+              : 'linear-gradient(90deg, transparent, #0F766E, transparent)',
             borderRadius: 999,
             margin: '0 auto 24px',
           }}
