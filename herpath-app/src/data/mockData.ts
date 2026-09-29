@@ -38,6 +38,8 @@ export interface User {
   sessionRate?: number;
   herpathId?: string;
   userType?: 'learner' | 'expert';
+  phone?: string;
+  language?: string;
 }
 
 export type AccessCategory = 'skills' | 'projects' | 'learningProgress' | 'certificates' | 'achievements' | 'assessments' | 'goals';
@@ -87,7 +89,7 @@ export interface Opportunity {
   id: string;
   title: string;
   company: string;
-  type: 'Freelance' | 'Mentor' | 'Collaborate' | 'Business';
+  type: 'Freelance' | 'Mentor' | 'Collaborate' | 'Business' | 'Scheme' | 'Local';
   skills: string[];
   matchScore: number;
   location: string;
@@ -96,6 +98,7 @@ export interface Opportunity {
   description: string;
   budget?: string;
   duration?: string;
+  link?: string;
 }
 
 export interface Project {
@@ -382,6 +385,9 @@ export const skills: Skill[] = [
   { id: 's12', name: 'Content Creation', category: 'Content', relatedSkills: ['Social Media', 'Video Editing', 'Photography'] },
   { id: 's13', name: 'Entrepreneurship', category: 'Business', relatedSkills: ['Business', 'Finance', 'Digital Marketing'] },
   { id: 's14', name: 'Teaching', category: 'Education', relatedSkills: ['Communication', 'Content Creation'] },
+  { id: 's15', name: 'Cooking', category: 'Home Services', relatedSkills: ['Baking', 'Home Management'] },
+  { id: 's16', name: 'Tailoring', category: 'Fashion & Design', relatedSkills: ['Handicrafts', 'Design'] },
+  { id: 's17', name: 'Baking', category: 'Home Services', relatedSkills: ['Cooking'] },
 ];
 
 // ============================================================
@@ -540,6 +546,45 @@ export const opportunities: Opportunity[] = [
     description: 'Train women from rural India in basic AI tools. Part-time, volunteer + stipend.',
     budget: '₹10,000 stipend/month',
   },
+  {
+    id: 'op7',
+    title: 'Mahila Samman Savings Certificate',
+    company: 'Govt of India',
+    type: 'Scheme',
+    skills: ['Finance'],
+    matchScore: 90,
+    location: 'Pan India',
+    isRemote: true,
+    postedAt: 'Always Open',
+    description: 'A small savings scheme exclusively for women and girls offering attractive interest rates.',
+    link: 'https://www.indiapost.gov.in/',
+  },
+  {
+    id: 'op8',
+    title: 'Stand Up India Scheme',
+    company: 'Govt of India',
+    type: 'Scheme',
+    skills: ['Entrepreneurship', 'Business'],
+    matchScore: 88,
+    location: 'Pan India',
+    isRemote: true,
+    postedAt: 'Always Open',
+    description: 'Facilitates bank loans between ₹10 lakh and ₹1 crore to at least one woman borrower per bank branch for setting up a greenfield enterprise.',
+    link: 'https://www.standupmitra.in/',
+  },
+  {
+    id: 'op9',
+    title: 'Local Bakery Assistant',
+    company: 'Sweet Treats Bakery',
+    type: 'Local',
+    skills: ['Cooking', 'Baking'],
+    matchScore: 85,
+    location: 'Mumbai, MH',
+    isRemote: false,
+    postedAt: '2h ago',
+    description: 'Looking for a passionate local baker to help out in our growing neighborhood bakery.',
+    budget: '₹8,000/month',
+  }
 ];
 
 // ============================================================
@@ -760,7 +805,7 @@ export const skillOptions = [
   'Canva', 'Digital Marketing', 'Cooking', 'Coding', 'Finance',
   'Video Editing', 'Photography', 'Communication', 'Social Media',
   'AI', 'Excel', 'Teaching', 'Design', 'Entrepreneurship',
-  'Writing', 'Public Speaking', 'Accounting',
+  'Writing', 'Public Speaking', 'Accounting', 'Tailoring', 'Baking', 'Handicrafts'
 ];
 
 export const learnOptions = [

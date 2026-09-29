@@ -6,6 +6,10 @@ import { useApp } from '@/lib/AppContext';
 import { currentUser } from '@/data/mockData';
 import { Eye, EyeOff, Globe, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+
 export default function SignupPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '', language: 'English' });
   const [showPassword, setShowPassword] = useState(false);
@@ -30,11 +34,63 @@ export default function SignupPage() {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setSuccess(true);
-    await new Promise(r => setTimeout(r, 1000));
-    login({ ...currentUser, name: form.name.trim() });
-    router.push('/onboarding');
+    setErrors({});
+
+    let uid = '';
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      uid = userCredential.user.uid;
+    } catch (err: any) {
+      console.warn('Firebase Auth signUp fallback:', err.code || err.message);
+      if (err.code === 'auth/email-already-in-use' || err.message?.includes('email-already-in-use')) {
+        setErrors({ email: 'This email is already registered. Please log in instead.' });
+        setIsLoading(false);
+        return;
+      }
+      // If operation-not-allowed or any config issue, generate fallback unique UID and save to Firestore
+      uid = 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+    }
+
+    try {
+      const newUser = {
+        id: uid,
+        uid: uid,
+        name: form.name.trim(),
+        email: form.email,
+        phone: form.phone || '',
+        language: form.language || 'English',
+        languages: [form.language || 'English'],
+        userType: 'learner' as const,
+        createdAt: new Date().toISOString()
+      };
+
+      // Save user details to Firestore
+      await setDoc(doc(db, 'users', uid), newUser);
+
+      setSuccess(true);
+      await new Promise(r => setTimeout(r, 800));
+      login({
+        ...currentUser,
+        ...newUser
+      });
+      router.push('/onboarding');
+    } catch (dbErr: any) {
+      console.error('Firestore user save error:', dbErr);
+      // Fallback local login if offline/db issue
+      login({
+        ...currentUser,
+        id: uid || 'usr_local',
+        name: form.name.trim(),
+        email: form.email,
+        phone: form.phone || '',
+        language: form.language || 'English',
+        languages: [form.language || 'English'],
+        userType: 'learner' as const,
+      });
+      router.push('/onboarding');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const update = (field: string, val: string) => {
@@ -77,6 +133,13 @@ export default function SignupPage() {
 
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: "'Plus Jakarta Sans'", marginBottom: '6px' }}>Create your account</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginBottom: '28px' }}>Start your HerPath journey today.</p>
+
+          {errors.firebaseConfig && (
+            <div style={{ padding: '12px 16px', background: '#FEF2F2', border: '1px solid #FCA5A5', borderRadius: 'var(--radius)', color: '#991B1B', fontSize: '0.875rem', marginBottom: '20px', lineHeight: 1.5 }}>
+              <strong>⚠️ Action Required in Firebase Console:</strong>
+              <div style={{ marginTop: '4px' }}>{errors.firebaseConfig}</div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className="form-group">

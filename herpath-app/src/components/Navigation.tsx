@@ -186,7 +186,6 @@ export function Sidebar() {
     { href: '/expert/lookup', label: 'Look Up Learner', icon: Search },
     { href: '/expert/learners', label: 'My Learners', icon: Users, badge: approvedCount > 0 ? approvedCount : undefined },
     { href: '/profile', label: 'Profile', icon: User },
-    { href: '/fraud-legal-help', label: 'Fraud & Legal Help', icon: Shield },
   ];
 
   const currentNavItems = currentRole === 'expert' ? expertNavItems : learnerNavItems;

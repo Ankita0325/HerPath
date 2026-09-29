@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { AppLayout } from '@/components/AppLayout';
 import { Heart, MessageCircle, Share2, Send, Plus, Award, Briefcase, Star, UserCircle2, Image as ImageIcon, X, Trash2 } from 'lucide-react';
 import { useApp } from '@/lib/AppContext';
+import { db } from '@/lib/firebase';
+import { collection, onSnapshot, setDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 type Comment = {
   id: string;
@@ -76,10 +78,30 @@ export default function CommunityPage() {
   const [newPostImage, setNewPostImage] = useState<string | null>(null);
   const [commentInput, setCommentInput] = useState<{ [key: string]: string }>({});
 
-  const handlePost = () => {
+  React.useEffect(() => {
+    try {
+      const unsub = onSnapshot(collection(db, 'community_posts'), (snapshot) => {
+        if (!snapshot.empty) {
+          const fsPosts: Post[] = snapshot.docs.map(d => ({
+            ...(d.data() as Post),
+            id: d.id,
+          }));
+          const fsIds = new Set(fsPosts.map(p => p.id));
+          const seedFiltered = initialPosts.filter(p => !fsIds.has(p.id));
+          setPosts([...fsPosts, ...seedFiltered]);
+        }
+      }, err => console.warn('Firestore posts listener error:', err));
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore snapshot setup error:', e);
+    }
+  }, []);
+
+  const handlePost = async () => {
     if (!newPostContent.trim()) return;
+    const postId = Date.now().toString();
     const newPost: Post = {
-      id: Date.now().toString(),
+      id: postId,
       author: user?.name || 'Anonymous User',
       role: currentRole as 'learner' | 'expert',
       avatarColor: user?.avatarColor || '#3B82F6',
@@ -93,6 +115,12 @@ export default function CommunityPage() {
     setPosts([newPost, ...posts]);
     setNewPostContent('');
     setNewPostImage(null);
+
+    try {
+      await setDoc(doc(db, 'community_posts', postId), newPost);
+    } catch (e) {
+      console.warn('Firestore post save error:', e);
+    }
   };
 
   const toggleLike = (postId: string) => {

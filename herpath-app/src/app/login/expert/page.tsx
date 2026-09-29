@@ -6,6 +6,10 @@ import { useApp } from '@/lib/AppContext';
 import { mentors } from '@/data/mockData';
 import { ShieldCheck, Eye, EyeOff, Globe, ArrowRight, Sparkles, UserCheck, ArrowLeft, Award } from 'lucide-react';
 
+import { auth, db } from '@/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+
 export default function ExpertLoginPage() {
   const [email, setEmail] = useState('priya@email.com');
   const [password, setPassword] = useState('expert1234');
@@ -22,11 +26,30 @@ export default function ExpertLoginPage() {
     setError('');
     setIsLoading(true);
 
-    await new Promise(r => setTimeout(r, 900));
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.exists() ? userDoc.data() : {};
+      const target = mentors.find(m => m.id === selectedExpert) || mentors[0];
 
-    const target = mentors.find(m => m.id === selectedExpert) || mentors[0];
-    login(target);
-    router.push('/expert/dashboard');
+      login({
+        ...target,
+        id: user.uid,
+        name: userData.name || target.name,
+        email: user.email || target.email,
+        userType: 'expert'
+      });
+      router.push('/expert/dashboard');
+    } catch (err: any) {
+      console.warn('Firebase expert login fallback to demo profile:', err);
+      // Fallback for demo expert accounts if Firebase account is not created yet
+      const target = mentors.find(m => m.id === selectedExpert) || mentors[0];
+      login({ ...target, userType: 'expert' });
+      router.push('/expert/dashboard');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDemoExpertLogin = async (expertIndex: number) => {

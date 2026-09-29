@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { AppLayout } from '@/components/AppLayout';
 import { currentUser } from '@/data/mockData';
-import { useApp } from '@/lib/AppContext';                              // ← NEW
+import { useApp } from '@/lib/AppContext';
+import { KnowledgeGraphViewer } from '@/components/KnowledgeGraphViewer';                              // ← NEW
 import { AccessRequest, AccessCategory } from '@/data/mockData';        // ← NEW types
 import {
   Edit3, Share2, MapPin, Globe, Plus, X, CheckCircle2, ChevronRight,
@@ -657,6 +658,13 @@ export default function ProfilePage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </SectionCard>
+
+              {/* Neo4j Knowledge Graph */}
+              <SectionCard title="My Knowledge Graph" icon={<Target size={16} />}>
+                <div style={{ borderRadius: 'var(--radius)', overflow: 'hidden' }}>
+                  <KnowledgeGraphViewer />
                 </div>
               </SectionCard>
 
