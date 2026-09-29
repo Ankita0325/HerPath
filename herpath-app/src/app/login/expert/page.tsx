@@ -60,7 +60,7 @@ export default function ExpertLoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
+    <div style={{ display: 'flex', height: '100vh', maxHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       {/* Left Panel */}
       <div style={{
         flex: '1',
@@ -151,6 +151,8 @@ export default function ExpertLoginPage() {
         background: 'var(--card)',
         position: 'relative',
         boxShadow: 'var(--shadow-xl)',
+        overflowY: 'auto',
+        height: '100%',
       }}>
         <div style={{ position: 'absolute', top: 24, left: 24 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: 600 }}>

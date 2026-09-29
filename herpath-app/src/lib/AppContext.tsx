@@ -1,5 +1,8 @@
 'use client';
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import { getUser } from './firebaseService';
 import { currentUser, mentors, User, AccessRequest, AccessCategory, initialAccessRequests } from '@/data/mockData';
 
 interface AppState {
@@ -10,6 +13,7 @@ interface AppState {
   language: string;
   currentRole: 'learner' | 'expert';
   accessRequests: AccessRequest[];
+  firebaseUid: string | null;
 }
 
 interface AppContextType extends AppState {
@@ -38,22 +42,64 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>({
-    user: currentUser, // default initialized to Learner (Riya Sharma) for demo
+    user: currentUser, // default to demo user; Firebase auth state will override
     isAuthenticated: true,
     isOnboarded: true,
     aiPanelOpen: false,
     language: 'English',
     currentRole: 'learner',
     accessRequests: initialAccessRequests,
+    firebaseUid: null,
   });
+
+  // ── Firebase Auth State Listener ─────────────────────────────────────────
+  // Runs once on mount. Keeps the app state in sync with Firebase Auth
+  // so users stay logged in across page refreshes.
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in — try to load their Firestore profile
+        const userData = await getUser(firebaseUser.uid);
+        if (userData) {
+          const role = userData.userType === 'expert' || userData.isMentor ? 'expert' : 'learner';
+          setState(s => ({
+            ...s,
+            user: {
+              ...currentUser,
+              ...userData,
+              id: firebaseUser.uid,
+              email: firebaseUser.email || userData.email || '',
+            } as User,
+            isAuthenticated: true,
+            isOnboarded: userData.onboarded ?? true,
+            currentRole: role,
+            firebaseUid: firebaseUser.uid,
+          }));
+        } else {
+          // Signed in via Firebase Auth but no Firestore doc yet
+          setState(s => ({
+            ...s,
+            isAuthenticated: true,
+            firebaseUid: firebaseUser.uid,
+          }));
+        }
+      }
+      // If firebaseUser is null, leave existing state (demo mode stays working)
+    });
+
+    return () => unsubscribe(); // cleanup on unmount
+  }, []);
 
   const login = useCallback((user: User) => {
     const role = user.userType === 'expert' || user.isMentor ? 'expert' : 'learner';
     setState(s => ({ ...s, user, isAuthenticated: true, currentRole: role }));
   }, []);
 
-  const logout = useCallback(() => {
-    setState(s => ({ ...s, user: null, isAuthenticated: false, isOnboarded: false }));
+  const logout = useCallback(async () => {
+    try {
+      await auth.signOut();
+    } catch (_) {}
+    setState(s => ({ ...s, user: null, isAuthenticated: false, isOnboarded: false, firebaseUid: null }));
   }, []);
 
   const completeOnboarding = useCallback(() => {
@@ -83,7 +129,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const sendAccessRequest = useCallback(
     (learnerHerPathId: string, requestedCategories: AccessCategory[], purpose: string) => {
-      // Validate HerPath ID
       const targetLearner = currentUser.herpathId?.toLowerCase() === learnerHerPathId.trim().toLowerCase() ? currentUser : null;
 
       if (!targetLearner) {
@@ -92,7 +137,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       const activeUser = state.user || mentors[0];
 
-      // Check if already requested
       const existing = state.accessRequests.find(
         r => r.expertId === activeUser.id && r.learnerHerPathId.toLowerCase() === learnerHerPathId.trim().toLowerCase()
       );
@@ -141,13 +185,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ...s,
         accessRequests: s.accessRequests.map(r => {
           if (r.id === requestId) {
-            return {
-              ...r,
-              status: 'APPROVED',
-              grantedCategories,
-              durationHours,
-              expiresAt: expires.toISOString(),
-            };
+            return { ...r, status: 'APPROVED', grantedCategories, durationHours, expiresAt: expires.toISOString() };
           }
           return r;
         }),

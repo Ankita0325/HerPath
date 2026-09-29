@@ -1,20 +1,29 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBNG3si6mZK7FOOD_5iqEDaz4FeRIKyuM4",
-  authDomain: "herpath-46376.firebaseapp.com",
-  projectId: "herpath-46376",
-  storageBucket: "herpath-46376.firebasestorage.app",
-  messagingSenderId: "220185547208",
-  appId: "1:220185547208:web:cc89062d30e03eb18ef0fd",
-  measurementId: "G-CYBX09RN2E"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
+// Initialize Firebase (singleton — safe for Next.js SSR + hot-reload)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-export { app, db, auth };
+// Analytics is browser-only — guard with isSupported()
+let analytics: ReturnType<typeof getAnalytics> | null = null;
+if (typeof window !== "undefined") {
+  isSupported().then((yes) => {
+    if (yes) analytics = getAnalytics(app);
+  });
+}
+
+export { app, db, auth, analytics };

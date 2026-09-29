@@ -1,9 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AppLayout } from '@/components/AppLayout';
 import { currentUser } from '@/data/mockData';
 import { useApp } from '@/lib/AppContext';
+import { getUser, updateUser } from '@/lib/firebaseService';
 import { KnowledgeGraphViewer } from '@/components/KnowledgeGraphViewer';                              // ← NEW
 import { AccessRequest, AccessCategory } from '@/data/mockData';        // ← NEW types
 import {
@@ -547,6 +548,7 @@ function PrivacyPanel() {
 
 /* ─── MAIN PROFILE PAGE ─── */
 export default function ProfilePage() {
+  const { user } = useApp();
   const [activeTab, setActiveTab] = useState('profile');
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showShareProfile, setShowShareProfile] = useState(false);
@@ -559,9 +561,31 @@ export default function ProfilePage() {
     { id: 'edu0', degree: 'Bachelor of Engineering', school: 'Mumbai University', field: 'Computer Engineering', from: '2020', to: '2024' },
   ]);
   const [editingSkills, setEditingSkills] = useState(false);
-  const [userSkills, setUserSkills] = useState(currentUser.skills);
-  const [availability, setAvailability] = useState(currentUser.availability);
-  const [goals, setGoals] = useState(['Start an online business', 'Become a freelancer', 'Learn Generative AI']);
+  const [userSkills, setUserSkills] = useState(user?.skills || currentUser.skills);
+  const [availability, setAvailability] = useState(user?.availability || currentUser.availability);
+  const [goals, setGoals] = useState(user?.goals || ['Start an online business', 'Become a freelancer', 'Learn Generative AI']);
+
+  // Load real user data from Firestore on mount
+  useEffect(() => {
+    if (user?.id && user.id !== 'usr_riya_001') {
+      getUser(user.id).then((data) => {
+        if (data) {
+          if (data.skills?.length) setUserSkills(data.skills);
+          if (data.availability?.length) setAvailability(data.availability);
+          if (data.goals?.length) setGoals(data.goals);
+        }
+      });
+    }
+  }, [user?.id]);
+
+  // Save skills to Firestore when changed
+  const handleSaveSkills = async (newSkills: string[]) => {
+    setUserSkills(newSkills);
+    setEditingSkills(false);
+    if (user?.id) {
+      await updateUser(user.id, { skills: newSkills });
+    }
+  };
 
   return (
     <AppLayout>

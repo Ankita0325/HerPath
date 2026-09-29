@@ -100,7 +100,7 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
+      <div style={{ height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
         <div style={{ textAlign: 'center', animation: 'slideUp 0.3s ease' }}>
           <div style={{ width: 72, height: 72, background: 'var(--success-light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
             <CheckCircle2 size={36} color="var(--success)" />
@@ -113,8 +113,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 16px' }}>
-      <div className="animate-fade-in-up" style={{ width: '100%', maxWidth: '520px' }}>
+    <div style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="animate-fade-in-up" style={{ width: '100%', maxWidth: '520px', maxHeight: '100vh', overflowY: 'auto', padding: '32px 16px' }}>
         <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '24px', transition: 'color var(--transition)' }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--primary)'}
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'}

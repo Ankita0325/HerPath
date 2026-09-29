@@ -111,7 +111,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
+    <div style={{ display: 'flex', height: '100vh', maxHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       {/* Left Panel */}
       <div style={{
         flex: '1',
@@ -179,6 +179,8 @@ export default function LoginPage() {
         background: 'var(--card)',
         position: 'relative',
         boxShadow: 'var(--shadow-xl)',
+        overflowY: 'auto',
+        height: '100%',
       }}>
         {/* Language + Top */}
         <div style={{ position: 'absolute', top: '24px', right: '24px', display: 'flex', gap: '8px', alignItems: 'center' }}>

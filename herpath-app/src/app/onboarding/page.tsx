@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/lib/AppContext';
+import { saveOnboarding } from '@/lib/firebaseService';
 import { roleOptions, skillOptions, learnOptions, goalOptions, languageOptions, availabilityOptions } from '@/data/mockData';
 import { ChevronRight, ChevronLeft, CheckCircle2, MapPin, Plus, X } from 'lucide-react';
 
@@ -99,6 +100,20 @@ export default function OnboardingPage() {
   const handleComplete = async () => {
     completeOnboarding();
     setStep(TOTAL_STEPS);
+
+    // Save onboarding answers to Firestore if user is authenticated
+    if (user?.id) {
+      await saveOnboarding(user.id, {
+        role: data.role,
+        skills: data.skills,
+        wantToLearn: data.wantToLearn,
+        goals: data.goals,
+        language: data.language,
+        location: data.location,
+        availability: data.availability,
+      });
+    }
+
     await new Promise(r => setTimeout(r, 2000));
     router.push('/dashboard');
   };
