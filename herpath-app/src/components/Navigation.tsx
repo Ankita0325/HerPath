@@ -6,7 +6,7 @@ import { useApp } from '@/lib/AppContext';
 import {
   Home, BookOpen, Compass, Briefcase, User,
   LogOut, Sparkles, ChevronRight, Shield, Search, Users,
-  TrendingUp, PanelLeftClose, PanelLeftOpen,
+  TrendingUp, PanelLeftClose, PanelLeftOpen, MessageCircle
 } from 'lucide-react';
 
 const MIN_WIDTH = 180;
@@ -170,6 +170,7 @@ export function Sidebar() {
 
   const learnerNavItems = [
     { href: '/dashboard', label: 'Home', icon: Home },
+    { href: '/community', label: 'Community', icon: MessageCircle },
     { href: '/learn', label: 'Learn', icon: BookOpen },
     { href: '/discover', label: 'Discover', icon: Compass },
     { href: '/portfolio', label: 'Portfolio', icon: TrendingUp },
@@ -181,10 +182,9 @@ export function Sidebar() {
 
   const expertNavItems = [
     { href: '/expert/dashboard', label: 'Expert Home', icon: Home },
+    { href: '/community', label: 'Community', icon: MessageCircle },
     { href: '/expert/lookup', label: 'Look Up Learner', icon: Search },
     { href: '/expert/learners', label: 'My Learners', icon: Users, badge: approvedCount > 0 ? approvedCount : undefined },
-    { href: '/discover', label: 'Discover', icon: Compass },
-    { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
     { href: '/profile', label: 'Profile', icon: User },
     { href: '/fraud-legal-help', label: 'Fraud & Legal Help', icon: Shield },
   ];
@@ -448,18 +448,16 @@ export function MobileNav() {
   const mobileItems = currentRole === 'expert'
     ? [
         { href: '/expert/dashboard', label: 'Home', icon: Home },
+        { href: '/community', label: 'Feed', icon: MessageCircle },
         { href: '/expert/lookup', label: 'Look Up', icon: Search },
         { href: '/expert/learners', label: 'Learners', icon: Users },
-        { href: '/opportunities', label: 'Jobs', icon: Briefcase },
         { href: '/profile', label: 'Profile', icon: User },
-        { href: '/fraud-legal-help', label: 'Legal Help', icon: Shield },
       ]
     : [
         { href: '/dashboard', label: 'Home', icon: Home },
+        { href: '/community', label: 'Feed', icon: MessageCircle },
         { href: '/learn', label: 'Learn', icon: BookOpen },
         { href: '/discover', label: 'Discover', icon: Compass },
-        { href: '/privacy', label: 'Privacy', icon: Shield },
-        { href: '/fraud-legal-help', label: 'Legal Help', icon: Shield },
         { href: '/profile', label: 'Profile', icon: User },
       ];
 
