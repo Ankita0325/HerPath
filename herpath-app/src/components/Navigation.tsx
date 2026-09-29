@@ -1,32 +1,47 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/lib/AppContext';
 import {
   Home, BookOpen, Compass, Briefcase, User,
-  LogOut, Sparkles, ChevronRight, X, Menu,
+  LogOut, Sparkles, ChevronRight, Shield, Search, Users,
   TrendingUp,
 } from 'lucide-react';
 
-const navItems = [
-  { href: '/dashboard', label: 'Home', icon: Home },
-  { href: '/learn', label: 'Learn', icon: BookOpen },
-  { href: '/discover', label: 'Discover', icon: Compass },
-  { href: '/portfolio', label: 'Portfolio', icon: TrendingUp },
-  { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
-  { href: '/profile', label: 'Profile', icon: User },
-];
-
 export function Sidebar() {
   const pathname = usePathname();
-  const { user, logout, toggleAIPanel } = useApp();
+  const { user, currentRole, logout, toggleAIPanel, accessRequests } = useApp();
   const router = useRouter();
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push(currentRole === 'expert' ? '/login/expert' : '/');
   };
+
+  const pendingCount = accessRequests.filter(r => r.status === 'PENDING').length;
+  const approvedCount = accessRequests.filter(r => r.status === 'APPROVED').length;
+
+  const learnerNavItems = [
+    { href: '/dashboard', label: 'Home', icon: Home },
+    { href: '/learn', label: 'Learn', icon: BookOpen },
+    { href: '/discover', label: 'Discover', icon: Compass },
+    { href: '/portfolio', label: 'Portfolio', icon: TrendingUp },
+    { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
+    { href: '/profile', label: 'Profile', icon: User },
+    { href: '/privacy', label: 'Privacy & Access', icon: Shield, badge: pendingCount > 0 ? pendingCount : undefined },
+  ];
+
+  const expertNavItems = [
+    { href: '/expert/dashboard', label: 'Expert Home', icon: Home },
+    { href: '/expert/lookup', label: 'Look Up Learner', icon: Search },
+    { href: '/expert/learners', label: 'My Learners', icon: Users, badge: approvedCount > 0 ? approvedCount : undefined },
+    { href: '/discover', label: 'Discover', icon: Compass },
+    { href: '/opportunities', label: 'Opportunities', icon: Briefcase },
+    { href: '/profile', label: 'Profile', icon: User },
+  ];
+
+  const currentNavItems = currentRole === 'expert' ? expertNavItems : learnerNavItems;
 
   return (
     <aside className="sidebar" style={{
@@ -42,9 +57,9 @@ export function Sidebar() {
       zIndex: 100,
       boxShadow: 'var(--shadow-sm)',
     }}>
-      {/* Logo */}
+      {/* Logo Header */}
       <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--border)' }}>
-        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Link href={currentRole === 'expert' ? '/expert/dashboard' : '/dashboard'} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
             width: 36, height: 36, borderRadius: '10px',
             background: 'linear-gradient(135deg, var(--primary), var(--accent))',
@@ -54,16 +69,20 @@ export function Sidebar() {
             <span style={{ color: 'white', fontWeight: 800, fontSize: '0.875rem', fontFamily: "'Plus Jakarta Sans'" }}>H</span>
           </div>
           <div>
-            <div style={{ fontFamily: "'Plus Jakarta Sans'", fontWeight: 800, fontSize: '1rem', color: 'var(--text)', letterSpacing: '-0.02em' }}>HerPath</div>
-            <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', letterSpacing: '0.02em', lineHeight: 1 }}>Her Skills. Her Journey.</div>
+            <div style={{ fontFamily: "'Plus Jakarta Sans'", fontWeight: 800, fontSize: '1rem', color: 'var(--text)', letterSpacing: '-0.02em' }}>
+              HerPath {currentRole === 'expert' ? 'Expert' : ''}
+            </div>
+            <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', letterSpacing: '0.02em', lineHeight: 1 }}>
+              {currentRole === 'expert' ? 'Mentor Gateway' : 'Her Skills. Her Journey.'}
+            </div>
           </div>
         </Link>
       </div>
 
       {/* Nav Items */}
       <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + '/');
+        {currentNavItems.map(({ href, label, icon: Icon, badge }) => {
+          const active = pathname === href || (href !== '/dashboard' && href !== '/expert/dashboard' && pathname.startsWith(href));
           return (
             <Link key={href} href={href} style={{
               display: 'flex',
@@ -71,7 +90,7 @@ export function Sidebar() {
               gap: '10px',
               padding: '10px 12px',
               borderRadius: 'var(--radius)',
-              marginBottom: '2px',
+              marginBottom: '3px',
               color: active ? 'var(--primary)' : 'var(--text-muted)',
               background: active ? 'var(--accent-light)' : 'transparent',
               fontWeight: active ? 600 : 500,
@@ -84,13 +103,18 @@ export function Sidebar() {
             >
               <Icon size={18} />
               <span>{label}</span>
-              {active && <ChevronRight size={14} style={{ marginLeft: 'auto' }} />}
+              {badge !== undefined && (
+                <span className="badge badge-primary" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 7px' }}>
+                  {badge}
+                </span>
+              )}
+              {active && badge === undefined && <ChevronRight size={14} style={{ marginLeft: 'auto' }} />}
             </Link>
           );
         })}
       </nav>
 
-      {/* AI Button */}
+      {/* AI Assistant Button */}
       <div style={{ padding: '12px', borderTop: '1px solid var(--border)' }}>
         <button
           onClick={toggleAIPanel}
@@ -102,7 +126,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* User */}
+      {/* User Footer */}
       {user && (
         <div style={{ padding: '12px 16px 16px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div className="avatar-placeholder avatar-md" style={{ background: user.avatarColor, color: 'white', fontSize: '0.75rem' }}>
@@ -110,7 +134,9 @@ export function Sidebar() {
           </div>
           <div style={{ flex: 1, overflow: 'hidden' }}>
             <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.role}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {currentRole === 'expert' ? 'Expert Account' : 'Learner Account'}
+            </div>
           </div>
           <button
             onClick={handleLogout}
@@ -129,7 +155,23 @@ export function Sidebar() {
 
 export function MobileNav() {
   const pathname = usePathname();
-  const mobileItems = navItems.slice(0, 5);
+  const { currentRole } = useApp();
+
+  const mobileItems = currentRole === 'expert'
+    ? [
+        { href: '/expert/dashboard', label: 'Home', icon: Home },
+        { href: '/expert/lookup', label: 'Look Up', icon: Search },
+        { href: '/expert/learners', label: 'Learners', icon: Users },
+        { href: '/opportunities', label: 'Jobs', icon: Briefcase },
+        { href: '/profile', label: 'Profile', icon: User },
+      ]
+    : [
+        { href: '/dashboard', label: 'Home', icon: Home },
+        { href: '/learn', label: 'Learn', icon: BookOpen },
+        { href: '/discover', label: 'Discover', icon: Compass },
+        { href: '/privacy', label: 'Privacy', icon: Shield },
+        { href: '/profile', label: 'Profile', icon: User },
+      ];
 
   return (
     <nav className="mobile-nav">

@@ -36,6 +36,29 @@ export interface User {
   certificates?: number;
   joinedAt?: string;
   sessionRate?: number;
+  herpathId?: string;
+  userType?: 'learner' | 'expert';
+}
+
+export type AccessCategory = 'skills' | 'projects' | 'learningProgress' | 'certificates' | 'achievements' | 'assessments' | 'goals';
+
+export interface AccessRequest {
+  id: string;
+  expertId: string;
+  expertName: string;
+  expertRole: string;
+  expertAvatarColor: string;
+  expertInitials: string;
+  learnerId: string;
+  learnerName: string;
+  learnerHerPathId: string;
+  requestedCategories: AccessCategory[];
+  grantedCategories?: Record<AccessCategory, boolean>;
+  purpose: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'EXPIRED' | 'REVOKED';
+  createdAt: string;
+  expiresAt?: string;
+  durationHours?: number;
 }
 
 export interface LearningPath {
@@ -130,7 +153,7 @@ export const currentUser: User = {
   email: 'riya.sharma@email.com',
   avatarColor: '#0F766E',
   initials: 'RS',
-  role: 'Freelancer',
+  role: 'Digital Creator & Entrepreneur',
   location: 'Mumbai',
   languages: ['Hindi', 'English', 'Marathi'],
   skills: ['Canva', 'Digital Marketing', 'Video Editing'],
@@ -143,17 +166,19 @@ export const currentUser: User = {
   certificates: 3,
   joinedAt: '2024-03-15',
   isVerified: true,
+  herpathId: 'HP-7K29-X4M8',
+  userType: 'learner',
 };
 
 // ============================================================
-// MENTORS
+// MENTORS / EXPERTS
 // ============================================================
 export const mentors: User[] = [
   {
     id: 'm1',
     name: 'Priya Sharma',
     email: 'priya@email.com',
-    avatarColor: '#7C3AED',
+    avatarColor: '#0F766E',
     initials: 'PS',
     role: 'Digital Marketing Expert',
     location: 'Mumbai',
@@ -171,6 +196,8 @@ export const mentors: User[] = [
     isMentor: true,
     isVerified: true,
     sessionRate: 500,
+    herpathId: 'HP-9B41-M3K2',
+    userType: 'expert',
   },
   {
     id: 'm2',
@@ -186,14 +213,15 @@ export const mentors: User[] = [
     wantToLearn: ['Canva', 'Digital Marketing'],
     goals: ['Teach others', 'Find a mentor'],
     availability: ['Weekends', 'Morning'],
-    bio: 'CA and business coach with 6 years of experience helping women understand finance and launch sustainable businesses. Mentor at multiple women entrepreneurship programs.',
+    bio: 'CA and business coach with 6 years of experience helping women understand finance and launch sustainable businesses.',
     experience: '6 years',
     rating: 4.9,
     reviewCount: 85,
     matchScore: 78,
     isMentor: true,
     isVerified: true,
-    sessionRate: 700,
+    herpathId: 'HP-82JD-9K21',
+    userType: 'expert',
   },
   {
     id: 'm3',
@@ -217,6 +245,8 @@ export const mentors: User[] = [
     isMentor: true,
     isVerified: true,
     sessionRate: 600,
+    herpathId: 'HP-5N12-V8P3',
+    userType: 'expert',
   },
   {
     id: 'm4',
@@ -240,7 +270,57 @@ export const mentors: User[] = [
     isMentor: true,
     isVerified: true,
     sessionRate: 800,
+    herpathId: 'HP-3X89-L4R1',
+    userType: 'expert',
   },
+];
+
+// ============================================================
+// SEED ACCESS REQUESTS
+// ============================================================
+export const initialAccessRequests: AccessRequest[] = [
+  {
+    id: 'req-1',
+    expertId: 'm1',
+    expertName: 'Priya Sharma',
+    expertRole: 'Digital Marketing Expert',
+    expertAvatarColor: '#0F766E',
+    expertInitials: 'PS',
+    learnerId: 'u1',
+    learnerName: 'Riya Sharma',
+    learnerHerPathId: 'HP-7K29-X4M8',
+    requestedCategories: ['skills', 'projects', 'learningProgress', 'certificates', 'achievements', 'goals'],
+    grantedCategories: {
+      skills: true,
+      projects: true,
+      learningProgress: true,
+      certificates: true,
+      achievements: true,
+      assessments: false,
+      goals: true,
+    },
+    purpose: 'Mentorship & Social Media Strategy Guidance',
+    status: 'APPROVED',
+    createdAt: '2026-09-28T10:00:00.000Z',
+    expiresAt: '2026-10-06T10:00:00.000Z',
+    durationHours: 168,
+  },
+  {
+    id: 'req-2',
+    expertId: 'm2',
+    expertName: 'Anjali Verma',
+    expertRole: 'Finance & Business Coach',
+    expertAvatarColor: '#0369A1',
+    expertInitials: 'AV',
+    learnerId: 'u1',
+    learnerName: 'Riya Sharma',
+    learnerHerPathId: 'HP-7K29-X4M8',
+    requestedCategories: ['skills', 'learningProgress', 'goals'],
+    purpose: 'Business Plan Review & Financial Roadmap',
+    status: 'PENDING',
+    createdAt: '2026-09-29T08:30:00.000Z',
+    durationHours: 168,
+  }
 ];
 
 // ============================================================

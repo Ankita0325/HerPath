@@ -10,7 +10,7 @@ import {
 import {
   ArrowRight, BookOpen, Briefcase, TrendingUp, ChevronRight,
   MapPin, Globe, Star, Zap, Clock, CheckCircle2, Circle, Play,
-  Sparkles, Target, Users,
+  Sparkles, Target, Users, Shield, Lock,
 } from 'lucide-react';
 
 function JourneyTracker() {
@@ -226,6 +226,37 @@ export default function DashboardPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* HerPath ID Portable Identity Card */}
+        <div className="card" style={{ padding: '20px 24px', marginBottom: '24px', border: '1.5px solid var(--accent-mid)', background: 'linear-gradient(135deg, #F0FDF4, var(--accent-light))' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: 44, height: 44, borderRadius: 'var(--radius)', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', flexShrink: 0 }}>
+                <Shield size={22} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--primary-dark)' }}>YOUR PORTABLE HERPATH ID</div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 800, fontFamily: 'monospace', color: 'var(--text)', letterSpacing: '0.05em' }}>{user?.herpathId || 'HP-7K29-X4M8'}</div>
+                <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '2px' }}>Share this ID with trusted experts when you want them to request access to your learning journey.</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(user?.herpathId || 'HP-7K29-X4M8');
+                  alert('HerPath ID copied to clipboard!');
+                }}
+                className="btn btn-secondary btn-sm"
+                style={{ gap: '6px' }}
+              >
+                Copy ID
+              </button>
+              <Link href="/privacy" className="btn btn-primary btn-sm" style={{ gap: '6px' }}>
+                <Lock size={14} /> Manage Access
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Journey Tracker */}

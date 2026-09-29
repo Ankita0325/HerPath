@@ -145,9 +145,27 @@ export default function LoginPage() {
           </select>
         </div>
 
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text)', marginBottom: '8px', fontFamily: "'Plus Jakarta Sans'" }}>Welcome Back</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem' }}>Sign in to continue your HerPath journey.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem' }}>Select your account type to sign in.</p>
+        </div>
+
+        {/* Login Account Type Toggle */}
+        <div style={{ display: 'flex', gap: 6, padding: 4, background: 'var(--bg-alt)', borderRadius: 'var(--radius)', marginBottom: 20 }}>
+          <button
+            type="button"
+            className="btn"
+            style={{ flex: 1, justifyContent: 'center', background: 'var(--card)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8125rem', boxShadow: 'var(--shadow-xs)' }}
+          >
+            Learner Login
+          </button>
+          <Link
+            href="/login/expert"
+            className="btn"
+            style={{ flex: 1, justifyContent: 'center', background: 'transparent', color: 'var(--text-muted)', fontWeight: 500, fontSize: '0.8125rem' }}
+          >
+            Expertise Login
+          </Link>
         </div>
 
         {/* Demo Login Banner */}
@@ -155,7 +173,7 @@ export default function LoginPage() {
           <Sparkles size={16} color="var(--primary)" />
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--primary)' }}>Try the demo</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--primary-dark)' }}>Explore HerPath as Riya Sharma</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--primary-dark)' }}>Explore HerPath as Learner Riya Sharma</div>
           </div>
           <button onClick={handleDemoLogin} className="btn btn-primary btn-sm">
             Start Demo <ArrowRight size={13} />
