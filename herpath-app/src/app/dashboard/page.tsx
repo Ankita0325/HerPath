@@ -9,7 +9,7 @@ import {
 } from '@/data/mockData';
 import {
   ArrowRight, BookOpen, Briefcase, TrendingUp, ChevronRight,
-  MapPin, Globe, Star, Zap, Clock, CheckCircle2, Circle, Play,
+  MapPin, Globe, Star, Zap, CheckCircle2, Play,
   Sparkles, Target, Users, Shield, Lock,
 } from 'lucide-react';
 
@@ -203,7 +203,7 @@ export default function DashboardPage() {
           <h1 style={{ fontSize: 'clamp(1.5rem,3vw,2rem)', fontWeight: 800, fontFamily: "'Plus Jakarta Sans'", marginBottom: '6px' }}>
             {greeting}, {firstName} 👋
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>Here's what's waiting for you today.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>Here&apos;s what&apos;s waiting for you today.</p>
         </div>
 
         {/* Quick Stats */}
