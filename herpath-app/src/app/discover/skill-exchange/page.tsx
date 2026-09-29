@@ -84,7 +84,7 @@ export default function SkillExchangePage() {
                       <ArrowLeft size={14} color="var(--text-muted)" />
                     </div>
                     <div style={{ padding: '10px 12px', background: 'var(--accent-light)', borderRadius: 'var(--radius)', border: '1px solid var(--accent-mid)' }}>
-                      <div style={{ fontSize: '0.75px', color: 'var(--text-muted)', marginBottom: 3, fontSize: '0.75rem' }}>Wants to learn:</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 3 }}>Wants to learn:</div>
                       <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.875rem' }}>{exchange.wantsSkill}</div>
                     </div>
                   </div>
