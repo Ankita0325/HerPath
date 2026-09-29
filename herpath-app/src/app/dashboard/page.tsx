@@ -252,7 +252,7 @@ export default function DashboardPage() {
               >
                 Copy ID
               </button>
-              <Link href="/privacy" className="btn btn-primary btn-sm" style={{ gap: '6px' }}>
+              <Link href="/profile?tab=privacy" className="btn btn-primary btn-sm" style={{ gap: '6px' }}>
                 <Lock size={14} /> Manage Access
               </Link>
             </div>
